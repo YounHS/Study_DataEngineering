@@ -130,6 +130,49 @@ service kibana start
 
 ------
 
+### Logstash install
+
+> Ubuntu 18.04 를 기준
+
+1. Logstash 다운로드
+
+```bash
+dpkg -i logstash-7.6.2.deb
+```
+
+​		[다운로드 링크](https://www.elastic.co/kr/downloads/logstash)에서 DEB을 다운로드 후, 상단 명령어로 설치 진행
+
+
+
+2. Logstash test를 위한 .conf 파일 생성
+
+```bash
+vi test.conf
+```
+
+​		하단의 내용으로 세팅
+
+```json
+input {
+    stdin {}
+}
+output {
+    stdout {}
+}
+```
+
+
+
+3. Logstash start
+
+```bash
+sudo /usr/share/logstash/bin/logstash -f ./test.conf
+```
+
+​		원하는 경로에 있는 .conf 파일과 상단의 명령어를 통해 Logstash 실행
+
+------
+
 해야할 일
 
-> Kibana 설치
+> Logstash .conf를 수정하여 실시간 데이터 subscribe 해보기
