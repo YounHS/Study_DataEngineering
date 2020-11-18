@@ -20,63 +20,29 @@ driver = webdriver.Chrome('C:\chromedriver.exe')
 #     )
 #
 # finally:
+count = True
+saveUpdated = ''
 
 while 1:
     # driver.implicitly_wait(5)
-    # driver = webdriver.Chrome('C:\chromedriver.exe')
-    # driver.implicitly_wait(3)
     # headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
     driver.get('https://coronaboard.kr/')
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    # html = requests.get(driver.page_source, headers=headers)
 
-    # soup = BeautifulSoup(html.text, 'html.parser')
-    # time.sleep(60)
-    extractworldpopulation = driver.find_element_by_xpath("//span[@id='last-updated']")
-    # extractworldpopulation = soup.find('span', {'id': 'last-updated'}).text.replace("마지막 업데이트: ", '')
-    # extractworldpopulation = driver.find_element_by_name('id').send_keys('last-updated')
-    # extractworldpopulation = driver.find_element('id', "last-updated")
-    print(extractworldpopulation.text)
-    # time.sleep(5)
-    # worldpopulation = extractworldpopulation.findAll('span')[1].text
-    # worldpopulation += extractworldpopulation.findAll('span')[3].text
-    # worldpopulation += extractworldpopulation.findAll('span')[5].text
-    # worldpopulation += extractworldpopulation.findAll('span')[7].text
-    # print(worldpopulation)
+    nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
+    if count or len(saveUpdated) == 0:
+        saveUpdated = nowUpdated
+        print(saveUpdated)
+        count = False
+    else:
+        # 여기서부터 새롭게 업데이트된 데이터 받아오기
+        if (nowUpdated != '-') and (saveUpdated != nowUpdated):
+            saveUpdated = nowUpdated
+            print(saveUpdated)
+    # print(saveUpdated)
+    time.sleep(1)
 
-    # highTemperature = soup.find('strong', {'class': 'degree_height'}).text.replace("최고온도", '')
-    # highTemperature = highTemperature.replace('°', '')
-    # print(highTemperature)
-    #
-    # lowTemperature = soup.find('strong', {'class': 'degree_low'}).text.replace("최저온도", '')
-    # lowTemperature = lowTemperature.replace('°', '')
-    # print(lowTemperature)
-    #
-    # feelTemperature = soup.find('strong', {'class': 'degree_feel'}).text.replace('°', '')
-    # print(feelTemperature)
-    #
-    # timeRainFall = soup.find('a', {'class': 'link_rainfall'}).text.replace("시간당 강수량 ", '')
-    # timeRainFall = timeRainFall.replace("mm", '')
-    # print(timeRainFall)
-    #
-    # liFineDust = soup.find('ul', {'class': 'today_chart_list'})
-    # fineDust = liFineDust.findAll('li')[0]
-    # fineDust = fineDust.find('strong', {'class': 'value'}).text
-    # print(fineDust)
-    #
-    # liUltraFineDust = soup.find('ul', {'class': 'today_chart_list'})
-    # ultraFineDust = liUltraFineDust.findAll('li')[1]
-    # ultraFineDust = ultraFineDust.find('strong', {'class': 'value'}).text
-    # print(ultraFineDust)
-    # # ultraFineDust = liUltraFineDust[1].find('strong', {'class': 'value'}).text
-    # # print(ultraFineDust)
-    #
-    # liOzone = soup.find('ul', {'class': 'today_chart_list'})
-    # ozone = liOzone.findAll('li')[2]
-    # ozone = ozone.find('strong', {'class': 'value'}).text
-    # print(ozone)
-    #
     # update = soup.find('span', {'class': 'title_dsc'}).text.replace(" 업데이트", '')
     # print(update)
 
