@@ -27,22 +27,28 @@ while 1:
     # driver.implicitly_wait(5)
     # headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
     driver.get('https://coronaboard.kr/')
+    time.sleep(5)
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
+    # element = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
+    #     (By.XPATH, "//div[normalize-space(@class)='row dashboard domestic']//div[1]/p[1]"))).text
+    # nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
+    confirmedCase = driver.find_element_by_xpath("//div[normalize-space(@class)='row dashboard domestic']//div[1]/p[1]").text
 
-    nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
-    if count or len(saveUpdated) == 0:
-        saveUpdated = nowUpdated
-        print(saveUpdated)
-        count = False
-    else:
-        # 여기서부터 새롭게 업데이트된 데이터 받아오기
-        if (nowUpdated != '-') and (saveUpdated != nowUpdated):
-            saveUpdated = nowUpdated
-            print(saveUpdated)
+    # confirmedCase = driver.find_element_by_xpath("//div[normalize-space(@class)='confirmed number']").text
+    print(confirmedCase)
+    # if count or len(saveUpdated) == 0:
+    #     saveUpdated = nowUpdated
+    #     print(saveUpdated)
+    #     print(confirmedCase)
+    #     count = False
+    # else:
+    #     # 여기서부터 새롭게 업데이트된 데이터 받아오기
+    #     if (nowUpdated != '-') and (saveUpdated != nowUpdated):
+    #         saveUpdated = nowUpdated
+    #         print(saveUpdated)
+    #         print(confirmedCase)
     # print(saveUpdated)
-    time.sleep(1)
-
     # update = soup.find('span', {'class': 'title_dsc'}).text.replace(" 업데이트", '')
     # print(update)
 
