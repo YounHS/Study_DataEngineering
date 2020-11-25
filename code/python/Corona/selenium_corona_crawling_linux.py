@@ -2,11 +2,44 @@ __author__ = 'Hyeonsoo Youn'
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from kafka import KafkaProducer
 
 import psycopg2
 import time
+import json
+import datetime
 
 conn_string = "host='localhost' dbname ='collectData' user='postgres' password='secy'"
+
+
+def kafka_pub(saveUpdated, worldConfirmedCase, worldDeathNum, worldQuarantineRelease, worldFatalityRate,
+              occurCountry, domesticConfirmedCase, domesticDeathNum, domesticQuarantineRelease,
+              domesticFatalityRate, totalInspector, duringInspect, navigateResult):
+    now = datetime.datetime.now()
+    nowDateTime = now.strftime('%Y-%m-%d %H:%M:%S')
+    producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+    topicName = "corona"
+    msg = {"saveUpdated": saveUpdated, "worldConfirmedCase": worldConfirmedCase, "worldDeathNum": worldDeathNum,
+           "worldQuarantineRelease": worldQuarantineRelease, "worldFatalityRate": worldFatalityRate,
+           "occurCountry": occurCountry, "domesticConfirmedCase": domesticConfirmedCase,
+           "domesticDeathNum": domesticDeathNum, "domesticQuarantineRelease": domesticQuarantineRelease,
+           "domesticFatalityRate": domesticFatalityRate, "totalInspector": totalInspector,
+           "duringInspect": duringInspect, "navigateResult": navigateResult, "insertTime": nowDateTime}
+
+    def on_send_success(record_metadata):
+        print(record_metadata.topic)
+        print(record_metadata.partition)
+        print(record_metadata.offset)
+
+    # def on_send_error(excp):
+    #     log.error("error!!!", exc_info=excp)
+
+    producer = KafkaProducer(value_serializer=lambda m: json.dumps(msg).encode("ascii"))
+    producer.send(topicName, {'key': 'value'}).add_callback(on_send_success)
+
+    producer.flush()
+
+    producer = KafkaProducer(retries=5)
 
 
 def createDB():
@@ -114,6 +147,9 @@ def main():
             print(totalInspector)
             print(duringInspect)
             print(navigateResult)
+            kafka_pub(saveUpdated, worldConfirmedCase, worldDeathNum, worldQuarantineRelease, worldFatalityRate,
+                      occurCountry, domesticConfirmedCase, domesticDeathNum, domesticQuarantineRelease,
+                      domesticFatalityRate, totalInspector, duringInspect, navigateResult)
             count = False
         else:
             # new updated data record
@@ -134,6 +170,9 @@ def main():
                 print(totalInspector)
                 print(duringInspect)
                 print(navigateResult)
+                kafka_pub(saveUpdated, worldConfirmedCase, worldDeathNum, worldQuarantineRelease, worldFatalityRate,
+                          occurCountry, domesticConfirmedCase, domesticDeathNum, domesticQuarantineRelease,
+                          domesticFatalityRate, totalInspector, duringInspect, navigateResult)
 
 
 if __name__ == "__main__":
