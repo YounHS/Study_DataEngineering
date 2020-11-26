@@ -37,4 +37,4 @@ python3 ./python/pub_example.py
 
 해야할 일
 
-> 스크립트 파일을 만들어 bootstrap 서버, 토픽명을 인자로 받아 쓰기
+> 코로나 데이터 파이프라인 프로젝트 기획
