@@ -23,6 +23,30 @@
 
 ​		(자세한 내용은 지속적으로 추가할 예정)
 
+```python
+import json
+from kafka import KafkaProducer
+
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+topicName = "test"
+# msg = {"id":"test", "tel":"010-1234-5678", "regDate":"20201109"}
+
+def on_send_success(record_metadata):
+    print(record_metadata.topic)
+    print(record_metadata.partition)
+    print(record_metadata.offset)
+
+producer = KafkaProducer(value_serializer=lambda m: json.dumps(msg).encode("ascii"))
+producer.send(topicName, {'key':'value'}).add_callback(on_send_success)
+
+producer.flush()
+
+producer = KafkaProducer(retries=5)
+```
+
+​		상단처럼 Kafka가 돌아가는 서버의 IP, 포트를 설정하고, topic 이름을 kafka에서 설정한 topic 이름과 같게 세팅해준다. kakfa 서버 및 토픽 세팅에 관련한 설정은 하단의 링크를 참고하면 된다.
+
 ​		[링크 클릭 후, README.md 파일 참고](https://github.com/YounHS/Study_DataEngineering/tree/main/code)
 
 
