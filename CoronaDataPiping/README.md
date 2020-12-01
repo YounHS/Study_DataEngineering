@@ -45,7 +45,7 @@ producer.flush()
 producer = KafkaProducer(retries=5)
 ```
 
-​		상단처럼 Kafka가 돌아가는 서버의 IP, 포트를 설정하고, topic 이름을 kafka에서 설정한 topic 이름과 같게 세팅해준다. kakfa 서버 및 토픽 세팅에 관련한 설정은 하단의 링크를 참고하면 된다.
+​		상단처럼 Kafka가 돌아가는 서버의 IP, 포트를 설정하고, topic 이름을 kafka에서 설정한 topic 이름과 같게 세팅해준다. 이렇게 세팅을 해줌으로써, CoronaBoard 웹에서 크롤링한 데이터를 실시간으로 분산처리하여 ELK (Logstash)와 연동할 수 있게 된다. kakfa 서버 및 토픽 세팅에 관련한 설정은 하단의 링크를 참고하면 된다.
 
 ​		[링크 클릭 후, README.md 파일 참고](https://github.com/YounHS/Study_DataEngineering/tree/main/code)
 
