@@ -85,3 +85,49 @@ producer = KafkaProducer(retries=5)
 
 ​		웹 크롤링이 필요한데, 지금까지 썼던 bs4의 경우, 어떠한 방법을 써도 동적으로 변화하는 데이터를 랜더링하는 웹 데이터를 크롤링할 수 없어서 애를 먹고 있었다. Selunium의 경우 Chrome driver를 통해 time.sleep() 같은 함수나 명시적/암묵적 함수를 설정할 수 있어, 이러한 동적 데이터를 랜더링하는 웹의 경우에도 데이터를 수집할 수 있다는 장점이 있어서 Selenium을 사용해보았다.
 
+```python
+def linux_selenium():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+
+    driver = webdriver.Chrome('/usr/bin/chromedriver', chrome_options=chrome_options)
+
+    count = True
+    saveUpdated = ''
+
+    while 1:
+        driver.get('https://coronaboard.kr/')
+        time.sleep(10)
+
+        nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
+
+        worldConfirmedCase = driver.find_element_by_xpath(
+            "//div[normalize-space(@class)='row dashboard world']//div[1]/p[1]").text.replace(',', '')
+```
+
+​		[리눅스에서 selenium 사용 환경 만들기](https://github.com/YounHS/Study_DataEngineering/tree/main/code/python/Corona)	
+
+​		리눅스 환경의 경우 상단의 링크에서 README.md 파일을 참고하여 selenium을 사용할 수 있는 환경을 만들어야한다. 그 후, 상단 코드를 참고하여 웹 크롤링을 할 수 있도록 한다.
+
+```python
+def windows_selenium():
+    driver = webdriver.Chrome('C:\chromedriver.exe')
+
+    count = True
+    saveUpdated = ''
+
+    while 1:
+        driver.get('https://coronaboard.kr/')
+        time.sleep(10)
+
+        nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
+
+        worldConfirmedCase = driver.find_element_by_xpath(
+            "//div[normalize-space(@class)='row dashboard world']//div[1]/p[1]").text.replace(',', '')
+```
+
+​		상단의 코드는 windows 환경에서 selenium을 사용할 때 웹 크롤링을 할 수 있도록 하는 코드이다. windows의 경우, 하단 링크의 README.md를 참고하여 chromedriver를 다운로드 받아 웹 크롤링이 가능한 환경을 만들어준다.
+
+​		[windows에서 웹 크롤링 환경 만들기](https://github.com/YounHS/Study_DataEngineering)
