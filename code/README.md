@@ -37,4 +37,4 @@ python3 ./python/pub_example.py
 
 해야할 일
 
-> 스크립트 파일을 만들어 bootstrap 서버, 토픽명을 인자로 받아 쓰기
+> Python을 사용하여 kafka subscribe 또는 publish 함수 생성 및 정리
