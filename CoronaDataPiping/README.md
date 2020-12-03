@@ -15,6 +15,22 @@
 
    (자세한 내용은 지속적으로 추가할 예정)
 
+   이전에, Naver 날씨 페이지에서 웹 크롤링하여 데이터 파이핑을 한 적이 있었다. 그리고 현재, 새로운 페이지를 크롤링하는 김에 logstash의 input, filter, output 관련 conf 파일을 새롭게 세팅하여 kibana index pattern 또한 새롭게 시작하려 했다. 음... 그런데 무슨 짓을 해도 kibana에 새롭게 세팅한 index pattern이 뜨지 않는 문제가 발생했다. 처음엔 단순히 zookeeper도 재시작해야하는 줄 알았지만... 그걸로 해결되지 않았다. 몇 십분 구글링하다가 문득 하단 링크의 ELK_install.md에 적어놨던 내용이 떠올랐다. kafka-console-consumer를 구동할 때 맨 마지막 인자로 '--from-beginning' 인자를 적어주면 offset를 리셋하여 새롭게 메시지를 가져온다는 내용이었다. 후.... 역시... 그렇게 진행하니까 바로 kibana에 제대로 index-pattern이 뜨는 것을 확인할 수 있었다. 
+   
+   
+   
+   ![corona_index_pattern](https://github.com/YounHS/Study_DataEngineering/blob/main/CoronaDataPiping/Picture/corona_index_pattern_show.png)
+   
+   
+   
+   어... 근데... 이게 업데이트가 초 단위로 되는게 아니라 관측값의 변동이 있을 때만 업데이트 하는 것으로 확인되었다... 그래서 시각화를 해보니까 음.... 하단의 캡쳐화면처럼 비쥬얼적으로 좀... 가오가 없다... 뭔가 가오가 필요한 듯 싶다.
+   
+   
+   
+   ![corona_index_pattern](https://github.com/YounHS/Study_DataEngineering/blob/main/CoronaDataPiping/Picture/less_data_input.png)
+   
+   
+   
    [링크 클릭 후, ELK_install.md 파일 참고](https://github.com/YounHS/Study_DataEngineering/tree/main/code)
 
 
