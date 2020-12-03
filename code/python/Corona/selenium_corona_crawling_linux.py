@@ -19,12 +19,12 @@ def kafka_pub(saveUpdated, worldConfirmedCase, worldDeathNum, worldQuarantineRel
     nowDateTime = now.strftime('%Y-%m-%d %H:%M:%S')
     producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
     topicName = "corona"
-    msg = {"saveUpdated": saveUpdated, "worldConfirmedCase": worldConfirmedCase, "worldDeathNum": worldDeathNum,
-           "worldQuarantineRelease": worldQuarantineRelease, "worldFatalityRate": worldFatalityRate,
-           "occurCountry": occurCountry, "domesticConfirmedCase": domesticConfirmedCase,
-           "domesticDeathNum": domesticDeathNum, "domesticQuarantineRelease": domesticQuarantineRelease,
-           "domesticFatalityRate": domesticFatalityRate, "totalInspector": totalInspector,
-           "duringInspect": duringInspect, "navigateResult": navigateResult, "insertTime": nowDateTime}
+    msg = {"saveUpdated": saveUpdated, "worldConfirmedCase": int(worldConfirmedCase), "worldDeathNum": int(worldDeathNum),
+           "worldQuarantineRelease": int(worldQuarantineRelease), "worldFatalityRate": float(worldFatalityRate),
+           "occurCountry": int(occurCountry), "domesticConfirmedCase": int(domesticConfirmedCase),
+           "domesticDeathNum": int(domesticDeathNum), "domesticQuarantineRelease": int(domesticQuarantineRelease),
+           "domesticFatalityRate": float(domesticFatalityRate), "totalInspector": int(totalInspector),
+           "duringInspect": int(duringInspect), "navigateResult": int(navigateResult), "insertTime": nowDateTime}
 
     def on_send_success(record_metadata):
         print(record_metadata.topic)
