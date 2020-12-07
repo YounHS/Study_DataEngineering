@@ -70,53 +70,85 @@ def main():
 
         nowUpdated = driver.find_element_by_xpath("//div[normalize-space(@class)='content-inner']//div[2]").text
 
-        worldCoronavirusCase = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='maincounter-number']//span[1]").text.replace(',', '')
-        # worldDeathNum = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard world']//div[2]/p[1]").text.replace(',', '')
-        # worldQuarantineRelease = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard world']//div[3]/p[1]").text.replace(',', '')
-        # worldFatalityRate = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard world']//div[4]/p[1]").text.replace('%', '')
-        # occurCountry = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard world']//div[5]/p[1]").text.replace(',', '')
-        #
-        # domesticConfirmedCase = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[1]/p[1]").text.replace(',', '')
-        # domesticDeathNum = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[2]/p[1]").text.replace(',', '')
-        # domesticQuarantineRelease = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[3]/p[1]").text.replace(',', '')
-        # domesticFatalityRate = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[4]/p[1]").text.replace('%', '')
-        # totalInspector = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[5]/p[1]").text.replace(',', '')
-        # duringInspect = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[6]/p[1]").text.replace(',', '')
-        # navigateResult = driver.find_element_by_xpath(
-        #     "//div[normalize-space(@class)='row dashboard domestic']//div[7]/p[1]").text.replace(',', '')
-
         if count or len(saveUpdated) == 0:
+            worldCoronavirusCase = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[4]/div[1]/span[1]").text.replace(',', '')
+            worldDeathNum = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[6]/div[1]/span[1]").text.replace(',', '')
+            worldRecoveredNum = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[7]/div[1]/span[1]").text.replace(',', '')
+            worldActiveCase = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[1]").text.replace(
+                ',', '')
+            worldActiveMildCondition = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]").text.replace(
+                ',', '')
+            worldActiveSeriousCritical = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/span[1]").text.replace(
+                ',', '')
+            worldClosedCase = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[1]").text.replace(
+                ',', '')
+            worldClosedRecoverdDischarged = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]").text.replace(
+                ',', '')
+            worldClosedDeath = driver.find_element_by_xpath(
+                "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/span[1]").text.replace(
+                ',', '')
+
             saveUpdated = nowUpdated
             print(saveUpdated)
             print('\n\n전세계 상황')
             print(worldCoronavirusCase)
-        #     print(worldDeathNum)
-        #     print(worldQuarantineRelease)
-        #     print(worldFatalityRate)
-        #     print(occurCountry)
+            print(worldDeathNum)
+            print(worldRecoveredNum)
+            print(worldActiveCase)
+            print(worldActiveMildCondition)
+            print(worldActiveSeriousCritical)
+            print(worldClosedCase)
+            print(worldClosedRecoverdDischarged)
+            print(worldClosedDeath)
             count = False
         else:
             # 여기서부터 새롭게 업데이트된 데이터 받아오기
             if (nowUpdated != '-') and (saveUpdated != nowUpdated):
+                worldCoronavirusCase = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[4]/div[1]/span[1]").text.replace(',', '')
+                worldDeathNum = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[6]/div[1]/span[1]").text.replace(',', '')
+                worldRecoveredNum = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[7]/div[1]/span[1]").text.replace(',', '')
+                worldActiveCase = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[1]").text.replace(
+                    ',', '')
+                worldActiveMildCondition = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]").text.replace(
+                    ',', '')
+                worldActiveSeriousCritical = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[9]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/span[1]").text.replace(
+                    ',', '')
+                worldClosedCase = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[1]").text.replace(
+                    ',', '')
+                worldClosedRecoverdDischarged = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]").text.replace(
+                    ',', '')
+                worldClosedDeath = driver.find_element_by_xpath(
+                    "//div[normalize-space(@class)='content-inner']//div[10]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/span[1]").text.replace(
+                    ',', '')
+
                 saveUpdated = nowUpdated
                 print(saveUpdated)
                 print('\n\n전세계 상황')
                 print(worldCoronavirusCase)
-        #         print(worldDeathNum)
-        #         print(worldQuarantineRelease)
-        #         print(worldFatalityRate)
-        #         print(occurCountry)
+                print(worldDeathNum)
+                print(worldRecoveredNum)
+                print(worldActiveCase)
+                print(worldActiveMildCondition)
+                print(worldActiveSeriousCritical)
+                print(worldClosedCase)
+                print(worldClosedRecoverdDischarged)
+                print(worldClosedDeath)
 
 
 if __name__ == "__main__":
