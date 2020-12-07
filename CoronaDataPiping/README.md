@@ -2,10 +2,12 @@
 1. 개요
 
    코로나로 인해 팬데믹이 선언된 이후, 도무지 현 상황이 나아질 기미가 보이지 않아, 국내의 코로나 관련 다양한 관측값, 더 나아가 전세계의 코로나 관련 다양한 관측값을 추출하여 데이터를 시각화해보기 위해 시작한다. 향후, 동시간대의 타 데이터와 머징하여 다양한 변수들 간의 상관관계를 도출하여 유의미한 분석까지 하는 것을 본 프로젝트의 목표로 한다.
+   
+   **(picture에서 EcoSys를 EcoSys2로 교체. 기왕 kafka 사용하니까 windows에서는 wordometer를 통한 코로나 데이터, Ubuntu에서는 CoronaBoard를 통한 코로나 데이터를 실시간 수집해보기로 함.)**
 
 
 
-![CDP_EcoSystem](https://github.com/YounHS/Study_DataEngineering/blob/main/CoronaDataPiping/Picture/EcoSys.png)
+![CDP_EcoSystem](https://github.com/YounHS/Study_DataEngineering/blob/main/CoronaDataPiping/Picture/EcoSys2.png)
 
 
 
