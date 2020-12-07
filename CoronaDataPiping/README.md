@@ -101,7 +101,13 @@ producer = KafkaProducer(retries=5)
 
 
 
-​		3.2 Selenium
+​		3.2 Worldometer
+
+​		전세계적인 코로나 데이터를 보여주는 사이트이다. 3.1의 coronaboard보다 조금 더 업데이트가 많이 이루어져 시각화 시, 아름다운 그래프를 볼 수 있을 것으로 보인다. 우선 worldometer로 전세계적인 코로나 데이터를 수집하였다[2020.12.08]. 이제 이 수집한 데이터를 VirtualBox의 Ubuntu 상의 kafka 서버로 publish할 것이다. 후.... 일단 coronaboard랑 같은 토픽을 사용할 것이라서..... 키 값 중복이 이루어지지 않도록 확인해야한다.
+
+
+
+​		3.3 Selenium
 
 ​		웹 크롤링이 필요한데, 지금까지 썼던 bs4의 경우, 어떠한 방법을 써도 동적으로 변화하는 데이터를 랜더링하는 웹 데이터를 크롤링할 수 없어서 애를 먹고 있었다. Selunium의 경우 Chrome driver를 통해 time.sleep() 같은 함수나 명시적/암묵적 함수를 설정할 수 있어, 이러한 동적 데이터를 랜더링하는 웹의 경우에도 데이터를 수집할 수 있다는 장점이 있어서 Selenium을 사용해보았다.
 
