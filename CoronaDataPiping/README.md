@@ -27,6 +27,8 @@
    
    어... 근데... 이게 업데이트가 초 단위로 되는게 아니라 관측값의 변동이 있을 때만 업데이트 하는 것으로 확인되었다... 그래서 시각화를 해보니까 음.... 하단의 캡쳐화면처럼 비쥬얼적으로 좀... 가오가 없다... 뭔가 가오가 필요한 듯 싶다.
    
+   **(Windows10(로컬)으로 worldometer를 크롤링하는데, 이건 자주 업데이트되서 뭔가 이쁜 그래프가 나올 것으로 예상됨. 설렘. 기쁨.)**
+   
    
    
    ![corona_index_pattern](https://github.com/YounHS/Study_DataEngineering/blob/main/CoronaDataPiping/Picture/less_data_input.png)
