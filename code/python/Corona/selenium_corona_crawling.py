@@ -52,7 +52,12 @@ def insertDB():
 
 
 def main():
-    driver = webdriver.Chrome('C:\chromedriver.exe')
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+
+    driver = webdriver.Chrome('C:\chromedriver.exe', chrome_options=chrome_options)
 
     count = True
     saveUpdated = ''
@@ -60,54 +65,46 @@ def main():
     while 1:
         # driver.implicitly_wait(5)
         # headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
-        driver.get('https://coronaboard.kr/')
-        time.sleep(10)
+        driver.get('https://www.worldometers.info/coronavirus/')
+        time.sleep(5)
 
-        nowUpdated = driver.find_element_by_xpath("//span[@id='last-updated']").text
+        nowUpdated = driver.find_element_by_xpath("//div[normalize-space(@class)='content-inner']//div[2]").text
 
-        worldConfirmedCase = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard world']//div[1]/p[1]").text.replace(',', '')
-        worldDeathNum = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard world']//div[2]/p[1]").text.replace(',', '')
-        worldQuarantineRelease = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard world']//div[3]/p[1]").text.replace(',', '')
-        worldFatalityRate = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard world']//div[4]/p[1]").text.replace('%', '')
-        occurCountry = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard world']//div[5]/p[1]").text.replace(',', '')
-
-        domesticConfirmedCase = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[1]/p[1]").text.replace(',', '')
-        domesticDeathNum = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[2]/p[1]").text.replace(',', '')
-        domesticQuarantineRelease = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[3]/p[1]").text.replace(',', '')
-        domesticFatalityRate = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[4]/p[1]").text.replace('%', '')
-        totalInspector = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[5]/p[1]").text.replace(',', '')
-        duringInspect = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[6]/p[1]").text.replace(',', '')
-        navigateResult = driver.find_element_by_xpath(
-            "//div[normalize-space(@class)='row dashboard domestic']//div[7]/p[1]").text.replace(',', '')
+        worldCoronavirusCase = driver.find_element_by_xpath(
+            "//div[normalize-space(@class)='maincounter-number']//span[1]").text.replace(',', '')
+        # worldDeathNum = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard world']//div[2]/p[1]").text.replace(',', '')
+        # worldQuarantineRelease = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard world']//div[3]/p[1]").text.replace(',', '')
+        # worldFatalityRate = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard world']//div[4]/p[1]").text.replace('%', '')
+        # occurCountry = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard world']//div[5]/p[1]").text.replace(',', '')
+        #
+        # domesticConfirmedCase = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[1]/p[1]").text.replace(',', '')
+        # domesticDeathNum = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[2]/p[1]").text.replace(',', '')
+        # domesticQuarantineRelease = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[3]/p[1]").text.replace(',', '')
+        # domesticFatalityRate = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[4]/p[1]").text.replace('%', '')
+        # totalInspector = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[5]/p[1]").text.replace(',', '')
+        # duringInspect = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[6]/p[1]").text.replace(',', '')
+        # navigateResult = driver.find_element_by_xpath(
+        #     "//div[normalize-space(@class)='row dashboard domestic']//div[7]/p[1]").text.replace(',', '')
 
         if count or len(saveUpdated) == 0:
             saveUpdated = nowUpdated
             print(saveUpdated)
             print('\n\n전세계 상황')
-            print(worldConfirmedCase)
-            print(worldDeathNum)
-            print(worldQuarantineRelease)
-            print(worldFatalityRate)
-            print(occurCountry)
-            print('\n\n대한민국 상황')
-            print(domesticConfirmedCase)
-            print(domesticDeathNum)
-            print(domesticQuarantineRelease)
-            print(domesticFatalityRate)
-            print(totalInspector)
-            print(duringInspect)
-            print(navigateResult)
+            print(worldCoronavirusCase)
+        #     print(worldDeathNum)
+        #     print(worldQuarantineRelease)
+        #     print(worldFatalityRate)
+        #     print(occurCountry)
             count = False
         else:
             # 여기서부터 새롭게 업데이트된 데이터 받아오기
@@ -115,19 +112,11 @@ def main():
                 saveUpdated = nowUpdated
                 print(saveUpdated)
                 print('\n\n전세계 상황')
-                print(worldConfirmedCase)
-                print(worldDeathNum)
-                print(worldQuarantineRelease)
-                print(worldFatalityRate)
-                print(occurCountry)
-                print('\n\n대한민국 상황')
-                print(domesticConfirmedCase)
-                print(domesticDeathNum)
-                print(domesticQuarantineRelease)
-                print(domesticFatalityRate)
-                print(totalInspector)
-                print(duringInspect)
-                print(navigateResult)
+                print(worldCoronavirusCase)
+        #         print(worldDeathNum)
+        #         print(worldQuarantineRelease)
+        #         print(worldFatalityRate)
+        #         print(occurCountry)
 
 
 if __name__ == "__main__":
