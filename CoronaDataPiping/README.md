@@ -47,24 +47,34 @@
 
 ```python
 import json
+import datetime
+
 from kafka import KafkaProducer
 
 
-producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
-topicName = "test"
-# msg = {"id":"test", "tel":"010-1234-5678", "regDate":"20201109"}
+def kafka_pub(saveUpdated, worldConfirmedCase, worldDeathNum, worldQuarantineRelease, worldFatalityRate, occurCountry, domesticConfirmedCase, domesticDeathNum, domesticQuarantineRelease, domesticFatalityRate, totalInspector, duringInspect, navigateResult):
+    now = datetime.datetime.now()
+    nowDateTime = now.strftime('%Y-%m-%d %H:%M:%S')
+    producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+    topicName = "corona"
+    msg = {"saveUpdated": saveUpdated, "worldConfirmedCase": int(worldConfirmedCase),
+           "worldDeathNum": int(worldDeathNum), "worldQuarantineRelease": int(worldQuarantineRelease), "worldFatalityRate": float(worldFatalityRate),
+           "occurCountry": int(occurCountry), "domesticConfirmedCase": int(domesticConfirmedCase),
+           "domesticDeathNum": int(domesticDeathNum), "domesticQuarantineRelease": int(domesticQuarantineRelease),
+           "domesticFatalityRate": float(domesticFatalityRate), "totalInspector": int(totalInspector),
+           "duringInspect": int(duringInspect), "navigateResult": int(navigateResult), "insertTime": nowDateTime}
 
-def on_send_success(record_metadata):
-    print(record_metadata.topic)
-    print(record_metadata.partition)
-    print(record_metadata.offset)
+    def on_send_success(record_metadata):
+        print(record_metadata.topic)
+        print(record_metadata.partition)
+        print(record_metadata.offset)
 
-producer = KafkaProducer(value_serializer=lambda m: json.dumps(msg).encode("ascii"))
-producer.send(topicName, {'key':'value'}).add_callback(on_send_success)
+    producer = KafkaProducer(value_serializer=lambda m: json.dumps(msg).encode("ascii"))
+    producer.send(topicName, {'key': 'value'}).add_callback(on_send_success)
 
-producer.flush()
+    producer.flush()
 
-producer = KafkaProducer(retries=5)
+    producer = KafkaProducer(retries=5)
 ```
 
 ​		상단처럼 Kafka가 돌아가는 서버의 IP, 포트를 설정하고, topic 이름을 kafka에서 설정한 topic 이름과 같게 세팅해준다. 이렇게 세팅을 해줌으로써, CoronaBoard 웹에서 크롤링한 데이터를 실시간으로 분산처리하여 ELK (Logstash)와 연동할 수 있게 된다. kakfa 서버 및 토픽 세팅에 관련한 설정은 하단의 링크를 참고하면 된다.
@@ -105,7 +115,7 @@ producer = KafkaProducer(retries=5)
 
 ​		3.2 Worldometer
 
-​		전세계적인 코로나 데이터를 보여주는 사이트이다. 3.1의 coronaboard보다 조금 더 업데이트가 많이 이루어져 시각화 시, 아름다운 그래프를 볼 수 있을 것으로 보인다. 우선 worldometer로 전세계적인 코로나 데이터를 수집하였다[2020.12.08]. 이제 이 수집한 데이터를 VirtualBox의 Ubuntu 상의 kafka 서버로 publish할 것이다. 후.... 일단 coronaboard랑 같은 토픽을 사용할 것이라서..... 키 값 중복이 이루어지지 않도록 확인해야한다.
+​		전세계적인 코로나 데이터를 보여주는 사이트이다. 3.1의 coronaboard보다 조금 더 업데이트가 많이 이루어져 시각화 시, 아름다운 그래프를 볼 수 있을 것으로 보인다. 우선 worldometer로 전세계적인 코로나 데이터를 수집하였다[2020.12.08]. 이제 이 수집한 데이터를 VirtualBox의 Ubuntu 상의 kafka 서버로 publish할 것이다. 후.... 일단 coronaboard랑 같은 토픽을 사용할 것이라서..... 키 값 중복이 이루어지지 않도록 확인해야한다. 혹시 모를 상황에 대비해 Worldometer에서 크롤링한 데이터의 키의 앞 부분에 'wo_' 를 붙여 알아보기 쉽도록 설정하였다.
 
 
 
