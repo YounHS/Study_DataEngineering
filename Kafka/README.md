@@ -46,8 +46,8 @@
    
    
 - 파일 시스템에 메세지를 저장하기 때문에 별도의 설정을 하지 않아도 데이터의 영속성 보장 가능
-   
-   
+  
+  
    - 디스크가 순차적으로 저장되어 있으므로 디스크 I/O가 줄어들어 속도가 빠름
 
 
@@ -88,8 +88,20 @@
 
 
 
+![Kafka_Cluster1](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcAj1C4%2FbtqExZWJ8g0%2F7qxa8TATVt1xD13HcAJhA1%2Fimg.png)
+
+​	(이미지 출처: http://kafka.apache.org/081/documentation.html)
+
+   - Consumer group에 다수의 consumer를 할당하면 각 consumer마다 별도의 partition으로부터 메시지를 받아오기 때문에 (producer가 각 partition에 메시지를 균등하게 분배한다고 가정할 경우), consumer group은 큐 모델로 동작
+   - 단일 consumer로 이루어진 consumer group을 활용하면 다수의 consumer가 동일한 partition에 동시에 접근하여 동일한 메시지를 엑세스하기 때문에 pub-sub 모델 구성 가능 (ex) 하나의 채팅창에 여러명 접근)
+        - 하나의 consumer에 의하여 독점적으로 partition이 엑세스되기 때문에 동일 partition 내의 메시지는 partition에 저장된 순서대로 처리, 만약 특정 키를 지닌 메시지가 발생 시간 순으로 처리되어야 한다면 partition 분배 알고리즘을 적절하게 구현하여 특정 키를 지닌 메시지는 동일한 partition에 할당되어 단일 consumer에 의해 처리되도록 해야함 (ex) 순서가 중요한 증권사 시스템 같은 경우 필요)
+        - 다른 partition에 속한 메시지의 순차적 처리는 보장되지 않으므로, 특정 topic의 전체 메시지가 발생 시간 순으로 처리되어야 할 경우, 해당 topic이 하나의 partition만을 가지도록 설정해야함
+   - 
+
+
+
 ------
 
 해야할 일
 
-> Kafka Cluster 정리
+> Kafka Cluster 세부 내용 정리
