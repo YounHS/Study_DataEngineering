@@ -96,7 +96,30 @@
    - 단일 consumer로 이루어진 consumer group을 활용하면 다수의 consumer가 동일한 partition에 동시에 접근하여 동일한 메시지를 엑세스하기 때문에 pub-sub 모델 구성 가능 (ex) 하나의 채팅창에 여러명 접근)
         - 하나의 consumer에 의하여 독점적으로 partition이 엑세스되기 때문에 동일 partition 내의 메시지는 partition에 저장된 순서대로 처리, 만약 특정 키를 지닌 메시지가 발생 시간 순으로 처리되어야 한다면 partition 분배 알고리즘을 적절하게 구현하여 특정 키를 지닌 메시지는 동일한 partition에 할당되어 단일 consumer에 의해 처리되도록 해야함 (ex) 순서가 중요한 증권사 시스템 같은 경우 필요)
         - 다른 partition에 속한 메시지의 순차적 처리는 보장되지 않으므로, 특정 topic의 전체 메시지가 발생 시간 순으로 처리되어야 할 경우, 해당 topic이 하나의 partition만을 가지도록 설정해야함
-   - 
+
+
+
+​	![kafka_cluster2](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuRhAk%2FbtqEBeTPqes%2FyYxO2zQuPCqjvhhUzsnbO0%2Fimg.png)
+
+​	(이미지 출처: https://dbjh.tistory.com/54)
+
+   - 각 topic의 patrition들이 분산되어 저장된 형태
+   - Kafka는 각각의 Kafka Broker에서 topic들을 관리하는데, 상기와 같이 하나의 topic을 여러개의 partition으로 나누어서 각각의 Kafka Broker에 저장 가능
+   - Kafka는 여러 상황을 대비하여 partition을 같은 Cluster 안에 다른 Broker에 복사하여 저장 가능한데, 이 때 필요한 것이 replication-factor 설정 값임. replication-factor는 얼마만큼 partition을 복사할 것인지 설정하는 것
+   - 상기와 같은 상황에서 replication-factor가 3이면 총 6개의 partition이 각 서버에 3개씩 생기기 때문에 하단의 그림처럼 총 18개의 partition이 생김
+   - replication-factor는 topic 단위의 설정 값. (ex) red는 3, blue는 2로 설정 가능)
+
+
+
+​	![Kafka_Cluster3](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbo3ahH%2FbtqEADzZjt9%2FSNpZs9kZQMKYiE7WXRcRP0%2Fimg.png)
+
+​	(이미지 출처: https://dbjh.tistory.com/54)
+
+   - replication-factor의 설정 값에 맞게 partition 복사가 이루어진 상황
+   - Red topic을 예로 들면, 첫번째 Broker에서 P0-1이 두번째 Broker에 P0-2로 복사되었고, 또 다시 세번째 Broker에 P0-3으로 복사된 것. 이 때, 각 partition들은 3개의 replica를 가진 것
+   - 이 때, 주의깊게 볼 것은 검은 테두리로 씌워진 partition인데, 이 partition이 바로 leader이고 테두리가 씌워져 있지 않은 partition은 follower
+   - 메세지를 partition에 쓰고 읽는 행위는 leader를 통해서만 수행 가능하고, follower는 leader의 복사본일 뿐임. follower는 해당 용도로만 사용되는 것은 아니며, 여기서 leader와 follower로 구성된 것을 ISR(In Sync Replica)이라고 함
+   - 만약 leader에서 장애가 발생하면, 해당 partition을 복사한 follower들 중 하나가 새로운 leader가 됨
 
 
 
@@ -104,4 +127,4 @@
 
 해야할 일
 
-> Kafka Cluster 세부 내용 정리
+> Kafka Cluster 세부 내용-2 정리 및 간단 정리
