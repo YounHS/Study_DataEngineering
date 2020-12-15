@@ -123,8 +123,36 @@
 
 
 
+​	![Kafka_Cluster4](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmmBrp%2FbtqEBfE92iQ%2FntqsJAvwEphDrdCawXZT8k%2Fimg.png)
+
+​	(이미지 출처: https://dbjh.tistory.com/54)
+
+   - P0 partition의 기존 leader에서 장애가 발생하여 follower 중 새로운 leader 선출
+   - 상기와 같이 새로운 leader가 선출되면 해당 leader를 통해서만 메세지 읽기, 쓰기가 가능
+
+
+
+> **Keyword**
+>
+> - Kafka Broker = Kafka 서버
+> - Zookeeper = 분산 코디네이션 시스템 (Kafka 서버 구성에서 필수)
+> - Kafka Cluster = (Kafka Broker + Zookeeper) x N
+> - Producer(Publisher) = 데이터를 Kafka Cluster에 적재하는 주체
+> - Consumer(Subscriber) = Kafka Cluster로부터 데이터를 읽어오는 주체
+> - Consumer Group = Consumer의 집합, Consumer x N
+> - Topic = Kafka Broker에서 사용하는 데이터(메세지)의 카테고리이며, Partition의 집합, Partition x N
+> - Partition = 메세지의 집합, Topic으로 묶여서 관리. Message x N
+> - Offset = Partition마다 관리되는 메세지의 인덱스
+> - Leader = 메세지를 읽고 쓰는 것이 가능한 Partition
+> - Follower = Leader의 복제, 잠재적 Leader
+
 ------
 
 해야할 일
 
-> Kafka Cluster 세부 내용-2 정리 및 간단 정리
+> 하기 링크, 이해하며 쭉 훑어보기
+>
+> - [ ] [아파치 카프카](https://engkimbs.tistory.com/691)
+> - [ ] [Kafka 이해하기](https://medium.com/@umanking/%EC%B9%B4%ED%94%84%EC%B9%B4%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%9D%B4%EC%95%BC%EA%B8%B0-%ED%95%98%EA%B8%B0%EC%A0%84%EC%97%90-%EB%A8%BC%EC%A0%80-data%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%9D%B4%EC%95%BC%EA%B8%B0%ED%95%B4%EB%B3%B4%EC%9E%90-d2e3ca2f3c2)
+> - [ ] [Kafka 소개 및 아키텍처 정리](https://epicdevs.com/17)
+> - [ ] [Topic Replication](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-topic-replication/)
