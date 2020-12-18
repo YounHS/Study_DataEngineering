@@ -48,7 +48,7 @@
    - Logstash.yml
 
      ```yaml
-  path.data : /var/lib/logstash
+    path.data : /var/lib/logstash
      path.logs : /var/log/logstash
      ```
    
@@ -90,15 +90,113 @@
    - .conf 파일 구성
    
      - input
+       
        - Beats, CloudWatch, Eventlog 등의 다양한 입력을 지원하여 데이터 수집
        - file, syslog(RFC3164 형식), beats(Filebeat)
+       
+       ```properties
+       # input
+       input {
+       	beats {
+       		port => 5044
+       		host => "0.0.0.0"
+       		client_inactivity_timeout => 86400
+       	}
+       }
+       ```
+       
+       - filebeat로부터 데이터를 받을 때는 input을 beats로 설정
+       
+       - filebeat로부터 데이터를 받을 포트 지정 (default port = 5044)
+       
+       - 호스트 상관없이 모든 데이터를 받을 경우 호스트는 0.0.0.0으로 작성
+       
+         
+       
      - filter
        - 형식이나 복잡성에 상관없이 설정을 통해 데이터를 동적으로 변환
+       
        - grok: 구문 분석 및 임의의 텍스트로 구성
+       
        - mutate: 이벤트 필드에서 일반적인 변환 수행
+       
        - drop: 이벤트 삭제
+       
        - clone: 이벤트의 복사본 생성
+       
        - geoip: ip 주소의 지리적 위치에 대한 정보 추가
+       
+         ```properties
+         filter {
+           if "IMP" in [log][file][path] {
+             mutate {
+               gsub => ["message", ", ", "| "]
+             }
+             grok {
+               match => { "message" => ["%{NUMBER:[imp][date]},%{NUMBER:[imp][h]},%{NUMBER:[imp][cu_id]},%{NUMBER:[imp][au_id]},%{NUMBER:[imp][pu_id]},%{WORD:[imp][c_key]},%{WORD:[imp][p_key]},%{GREEDYDATA:[imp][no_info]},%{NUMBER:[imp][place_id]},%{WORD:[imp][nation]},%{WORD:[imp][device]},%{NUMBER:[imp][no_info2]},%{NUMBER:[imp][user_key]},%{WORD:[imp][p_set_id]},%{GREEDYDATA:[imp][url]},\"%{TIMESTAMP_ISO8601:[imp][cre_tt]}\",%{GREEDYDATA:[imp][remote_addr]},%{NUMBER:[click][ar_id]}"]}
+               remove_field => ["message"]
+               }
+             grok {
+               match => { "message" => ["%{NUMBER:[imp][date]},%{NUMBER:[imp][h]},%{NUMBER:[imp][cu_id]},%{NUMBER:[imp][au_id]},%{NUMBER:[imp][pu_id]},%{WORD:[imp][c_key]},%{WORD:[imp][p_key]},%{GREEDYDATA:[imp][no_info]},%{NUMBER:[imp][place_id]},%{WORD:[imp][nation]},%{WORD:[imp][device]},%{NUMBER:[imp][no_info2]},%{NUMBER:[imp][user_key]},%{WORD:[imp][p_set_id]},%{GREEDYDATA:[imp][url]},\"%{TIMESTAMP_ISO8601:[imp][cre_tt]}\""]
+               remove_field => ["message"]
+               }
+             }
+             date {
+               match => [ "[imp][cre_tt]", "YYYY-MM-dd H:m:s" ]
+               target => "@timestamp"
+               timezone => "Asia/Seoul"
+             }
+             mutate {
+               gsub => [ '[imp][url]', '"', '']
+               convert => ["[imp][au_id]","integer"]
+               convert => ["[imp][cu_id]","integer"]
+               convert => ["[imp][date]","integer"]
+               convert => ["[imp][h]","integer"]
+               convert => ["[imp][place_id]","integer"]
+               convert => ["[imp][pu_id]","integer"]
+             }
+           }
+         }
+         ```
+       
+       - [log] [file] [path]: 로그의 위치
+       
+         - 노출 로그를 정제하는 과정으로 우선 log를 읽어오는 경로로 다른 로그와 구분
+         - 상단의 경우, 로그 경로에 "IMP"가 포함되어 있으면 이곳에서 필터링
+       
+       - mutate의 gsub
+       
+         - 가장 상단에서 grok에 보낼 메시지를 미리 전처리할 작업이 있을 때 사용
+         - 상단은 , 구분자를 |로 변경하는 작업을 진행
+         - 사용법: mutate {gsub => [필드명, 원래 값, 변경할 값]
+       
+       - grok 플러그인
+       
+         - 우선 읽어들인 로그는 message 안에 포함
+         - grok을 여러번 사용하면 multiple grok 적용 가능
+         - 하나의 grok 패턴에서 파싱이 안되면 message가 그대로 다음 grok으로 넘어오게 되고 재시도
+         - 다수의 grok에 파싱이 되는 메시지의 경우, 여러번 grok이 적용되는 문제도 발생하니 주의
+         - 사용법: grok {match => {"message" => [grok 정규표현식]}, removed_field => [지우고 싶은 필드명]}
+       
+       - date 플러그인
+       
+         - elastic에 데이터가 저장될 때, elastic에 데이터를 보내는 시간이 아닌 실제 로그 파일에 적힌 시간으로 elastic에 적재하기 위해 원하는 field로 재설정 필요
+         - 사용법: date {match => {변경할 필드명, 날짜 format}, target =>"@timestamp", timezone => "Asia/Seoul"}
+       
+       - mutate 플러그인
+       
+         - 상단의 gsub 외에도 다양한 기능 존재
+         - elastic에 logstash에서 파싱한 데이터가 넘어갈 경우, 필드의 타입을 변경해줘야 원하는 타입으로 데이터가 돌아감
+         - 데이터 타입을 변경하지 않고 적재하면 무조건 string으로 넘어감
+         - 사용법: mutate {convert => [변경할 필드명, 데이터 타입]}
+       
+       - kv 필터 플러그인
+       
+         - key "구분자" value 구조의 데이터를 분류하는데 특화
+         - 사용법: filter {kv {source => 필드명, field_split => 구분자로 필드 분리, value_split => 구분자로 key value 분리}}
+       
+         
+       
      - output
        - EalsticSearch, Email, ECS, Kafka 등 원하는 저장소에 데이터 전송
        - elasticsearch: 이벤트 데이터를 elasticsearch에 전송
@@ -112,5 +210,5 @@
 
 해야할 일
 
-> .conf 파일의 input, filter, output 예제 및 상세 설명 study
+> corona | weather 로그 수집 시 사용한 output 예제 업로드
 >
