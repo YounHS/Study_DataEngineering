@@ -48,7 +48,7 @@
    - Logstash.yml
 
      ```yaml
-   path.data : /var/lib/logstash
+     path.data : /var/lib/logstash
      path.logs : /var/log/logstash
      ```
    
