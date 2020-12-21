@@ -48,7 +48,7 @@
    - Logstash.yml
 
      ```yaml
-    path.data : /var/lib/logstash
+   path.data : /var/lib/logstash
      path.logs : /var/log/logstash
      ```
    
@@ -199,10 +199,36 @@
        
      - output
        - EalsticSearch, Email, ECS, Kafka 등 원하는 저장소에 데이터 전송
+       
        - elasticsearch: 이벤트 데이터를 elasticsearch에 전송
+       
        - file: 디스크 파일에 기록
+       
        - graphite: graphite에 전송 (메트릭을 저장하고 그래프로 작성하는 데 사용되는 오픈 소스 도구)
+       
        - statsd: 카운터 및 타이머와 같은 통계를 수신하고 UDP를 통해 전송되며, 하나 이상의 플러그 가능한 백엔드 서비스에 집계를 전송하는 서비스
+       
+         ```properties
+         # 실제로 구성한 내용
+         output {
+           if "IMP_PRODUCT" in [log][file][path] {
+             elasticsearch {
+               hosts => ["ip 주소:9200"]
+               manage_template => false
+               index => "2020-imp-%{[@metadata][beat]}-%{[host][name]}"
+             }
+           }
+           else if "CLICK" in [log][file][path] {
+             elasticsearch {
+               hosts => ["ip 주소:9200"]
+               manage_template => false
+               index => "2020-click-%{[@metadata][beat]}-%{[host][name]}"
+             }
+           }
+         }
+         ```
+       
+       - 여러 개의 filebeat에서 하나의 logstash로 보낼 경우, 파일에 따라 다른 인덱스명으로 elastic에 적재를 해야할 경우는 상기와 같이 조건문을 사용하여 다양한 인덱스로 보내줌
 
 ​	
 
