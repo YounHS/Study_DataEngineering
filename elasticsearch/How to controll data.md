@@ -18,6 +18,8 @@
      ```
      
 
+   
+
 2. 1의 결과 404 출력 시, 해당 인덱스가 없으므로 인덱스 새로 생성
 
    - 인덱스 생성
@@ -26,12 +28,12 @@
      curl -XPUT http://localhost:9200/classes
      ```
      
-- 인덱스 생성 확인
-   
-  ```bash
+   - 인덱스 생성 확인
+
+     ```bash
      curl -XGET http://localhost:9200/classes
-  ```
-   
+     ```
+     
 
 
 
