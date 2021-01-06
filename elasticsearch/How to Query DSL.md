@@ -58,7 +58,7 @@
    - term, range: Filter Context
 
 
-   
+
 
 2. Query DSL example
 
@@ -95,3 +95,72 @@
        - 기본 필드 검색 쿼리
        - 텍스트, 숫자, 날짜 허용
      - 상단의 경우, name에 park이라는 문자열이 있는 모든 document를 조회
+     
+   - bool
+
+     ```json
+     {
+         "query": {
+             "bool": {
+                 "must": [
+                     { 
+                         "match": { 
+                             "age": "21" 
+                         } 
+                     }
+                 ],
+                 "must_not": [
+                     { 
+                         "match": { 
+                             "state": "Seoul" 
+                         } 
+                     }
+                 ]
+             }
+         }
+     }
+     ```
+
+     - bool(True/False) 로직을 사용하는 query
+     - bool query 종류
+       - must: 지정된 모든 query가 일치하는 document 조회
+       - should: 지정된 모든 query 중 하나라도 일치하는 document 조회
+       - must_not: 지정된 모든 query가 모두 일치하지 않는 document 조회
+       - filter: must처럼 filter 절에 지정된 모든 query가 일치하는 document 조회, Filter Context에서 실행되기 때문에 score 무시
+     - 상단의 경우, 나이가 21세이고, 서울에 살지 않는 document를 조회하는 예제
+
+   - filter
+
+     - document가 검색 query와 일치하는지 나타내는 _score 값을 계산하지 않도록 query 실행을 최적화
+
+   - range
+
+     ```json
+     {
+         "query": {
+             "bool": {
+                 "must": { 
+                     "match_all": {} 
+                 },
+                 "filter": {
+                     "range": {
+                         "balance": {
+                             "gte": 15000,
+                             "lte": 20000
+                         }
+                     }
+                 }
+             }
+         }
+     }
+     ```
+
+     - 범위를 지정하여 범위에 해당하는 값을 갖는 document 조회
+     - range query에서 범위 지정을 위한 파라미터
+       - gte: 이상
+       - gt: 초과
+       - lte: 이하
+       - lt: 미만
+       - boost: query의 boost 값을 세팅 (default: 1.0)
+         - boost -> 검색에 가중치를 부여하는 것
+     - 상단의 경우, 잔액이 15000~20000인 범위에 속하는 document를 조회하는 예제
