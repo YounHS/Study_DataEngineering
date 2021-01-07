@@ -164,3 +164,56 @@
        - boost: query의 boost 값을 세팅 (default: 1.0)
          - boost -> 검색에 가중치를 부여하는 것
      - 상단의 경우, 잔액이 15000~20000인 범위에 속하는 document를 조회하는 예제
+     
+   - term
+   
+     ```json
+     {
+         "query": {
+             "term" : { 
+                 "food" : "mango" 
+             }
+         }
+     }
+     ```
+   
+     - 역색인에 명시된 토큰 중 정확한 키워드가 포함된 document 조회
+     - string 필드는 text, keyword 타입을 포함
+     - text 타입은 역색인 가능
+     - keyword 타입은 역색인 불가능
+     - 전문(full text) 검색의 경우 term보다 match query 사용을 권장
+     - 역색인 시, lowercase 처리
+   
+   - terms
+   
+     ```json
+     {
+         "query": {
+             "terms": {
+                 "name": ["kim", "park", "lee"]
+             }
+         }
+     }
+     ```
+   
+     - 배열에 나열된 keyword 중 하나와 일치하는 document 조회
+     - 상단의 경우, name 필드에서 kim, park, lee keyword가 하나라도 존재하는 document 조회하는 예제
+   
+   - regexp
+   
+     ```json
+     {
+         "query": {
+             "regexp":{
+                 "name": "kim.*"
+             }
+         }
+     }
+     ```
+   
+     - 정규 표현식 term query 사용 가능
+     - Term level query이며, 정확한 검색을 한다는 것을 의미
+     - 상단은 name 필드에서 처음 문자열이 kim인 document를 조회하는 예제
+     - 정규식 . 과 *
+       - .: 모든 문자열
+       - *: 0개 이상의 자리수
