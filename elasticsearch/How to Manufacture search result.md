@@ -52,3 +52,65 @@
      - 사용하지 않을 경우, default는 _score 내림차순이며, 다른 항목으로 정렬할 경우, 오름차순이 default 값으로 설정됨
      - 상단의 경우, age 필드에 대해 내림차순으로 정렬한 후, balance 필드에 대해 내림차순으로 정렬하고 _score를 내림차순으로 정렬하는 예제
      
+
+
+
+3. source filtering
+
+   - no response example
+
+     ```json
+     {
+         "_source": false,
+         "query":{
+             "match_all":{}
+         }
+     }
+     ```
+
+   - response only name, age example
+
+     ```json
+     {
+         "_source": [
+             "name","age"
+         ],
+         "query":{
+             "match_all":{}
+         }
+     }
+     ```
+
+     - 검색된 데이터에서 특정 필드들만 반환 가능
+     - SQL의 select query 시, 특정 컬럼들을 명시하는 것과 유사
+     - 검색된 document의 총 갯수를 알고 싶은 경우, _source를 노출시키지 않음으로써 성능 향상 가능
+     - *를 사용하여 필드명 명시, includes/excludes를 통해 필드를 포함 및 제외 가능
+
+
+
+4. aggregations
+
+   - name에 kim이 포함된 document들의 balance 필드 값들을 평균 내는 예제
+
+     ```json
+     {
+         "query": {
+             "term": {
+                 "name" : "kim"
+             }
+         },
+         "aggs" : {
+             "avg_balance_test" : {
+                 "avg" : {
+                     "field" : "balance"
+                 }
+             }
+         }
+     }
+     ```
+
+     - 집계를 의미하며 aggs 필드를 통해 document 갯수 통계내기 가능
+     - SQL의 group by 와 유사
+     - **avg_balance_test**: response 데이터에 명시될 통계 결과 필드명을 의미. 원하는 명칭으로 작성
+     - **avg**: 집계 타입을 의미. sum, cardinality 등 여러가지 존재
+     - **field**: 어떤 필드에 대해 통계 낼 것인지 명시. 상기 예제에서는 balance 필드에 대해 집계
