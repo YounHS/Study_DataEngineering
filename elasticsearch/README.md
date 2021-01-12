@@ -86,6 +86,11 @@
 
 해야할 일
 
-> 실제 Elasticsearch 사용법 정리
->
+> - [ ] read -> How to BULK
+> - [ ] read -> How to Manufacture search result
+> - [ ] read -> How to Mapping data
+> - [ ] read -> How to Query DSL
+> - [ ] read -> How to controll data
+> - [x] read -> How to search data
+> - [x] read -> How to update data
 
