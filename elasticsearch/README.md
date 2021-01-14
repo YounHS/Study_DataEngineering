@@ -88,9 +88,9 @@
 
 > - [ ] read -> How to BULK
 > - [ ] read -> How to Manufacture search result
-> - [ ] read -> How to Mapping data
+> - [x] read -> How to Mapping data
 > - [ ] read -> How to Query DSL
-> - [ ] read -> How to controll data
+> - [x] read -> How to controll data
 > - [x] read -> How to search data
 > - [x] read -> How to update data
 
