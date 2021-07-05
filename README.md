@@ -1,4 +1,4 @@
-# dData Engineer Study
+# Data Engineer Study
 1. Kafka Download
 
    ```bash
