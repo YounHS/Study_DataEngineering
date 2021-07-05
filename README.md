@@ -1,4 +1,4 @@
-# Data Engineer Study
+# dData Engineer Study
 1. Kafka Download
 
    ```bash
@@ -15,17 +15,37 @@
 
 
 
-2. python-kafka Download
+2. Zookeeper 실행
 
    ```bash
-   pip install kafka-python
+   $ ./bin/zookeeper-server-start.sh ./config/zookeeper.properties
+
+   # ./config/zookeeper.properties 데이터 경로 수정 (놔둬도 됨)
+   ```
+
+
+
+3. Kafka 서버 실행
+
+   ```bash
+   $ ./bin/kafka-server-start.sh ./config/server.properties
+
+   # ./config/server.properties 로그 경로 수정 (놔둬도 됨)
+   ```
+
+
+
+4. python-kafka Download
+
+   ```bash
+   $ pip install kafka-python
    ```
 
    만약 python에서 kafka를 사용해야한다면 상단처럼 pip를 통해 패키지를 받자.
 
 
 
-3. chromedriver Download
+5. chromedriver Download
 
    먼저, 'chrome' 을 실행한 후, '도움말' -> 'Chrome 정보'를 클릭하여, 사용중인 크롬 버전을 확인한다. 
 
@@ -35,10 +55,9 @@
 
    그리고 압축을 풀어주고 사용하면 된다. 하단은 python에서 chromedriver를 사용할 때의 예이다.
 
-   ```python
+   ```bash
    driver = webdriver.Chrome('C:\chromedriver.exe')
    ```
-
 
 ------
 
